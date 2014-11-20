@@ -8,8 +8,9 @@ module Sunspot::Queue::Sidekiq
 
     sidekiq_options :queue => "sunspot"
 
-    def perform(klass, id)
+    def perform(klass, id,current_tenant)
       without_proxy do
+        $current_tenant = current_tenant
         constantize(klass).find(id).solr_index
       end
     end
